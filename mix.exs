@@ -4,11 +4,15 @@ defmodule Redlock.Mixfile do
   def project do
     [
       app: :redlock,
-      version: "1.0.10",
-      elixir: "~> 1.5",
+      version: "1.1.0",
+      elixir: "~> 1.8",
       package: package(),
-      start_permanent: Mix.env == :prod,
-      deps: deps()
+      start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      dialyzer_ignored_warnings: [
+        {:warn_umatched_return, {:_, :_}, {:unmatched_return, :_}},
+        {:warn_return_no_exit, {:_, :_}, {:no_return, [:only_normal | :_]}}
+      ]
     ]
   end
 
@@ -20,9 +24,9 @@ defmodule Redlock.Mixfile do
 
   defp deps do
     [
-      {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
+      {:dialyzex, "~> 1.2.0", only: :dev},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
-      {:redix, "~> 0.9.2"},
+      {:redix, "~> 0.10.2"},
       {:poolboy, "~> 1.5"},
       {:fastglobal, "~> 1.0.0"},
       {:ex_hash_ring, "~> 3.0"},
@@ -36,7 +40,7 @@ defmodule Redlock.Mixfile do
       licenses: ["MIT"],
       links: %{
         "Github" => "https://github.com/lyokato/redlock",
-        "Docs"   => "https://hexdocs.pm/redlock"
+        "Docs" => "https://hexdocs.pm/redlock"
       },
       maintainers: ["Lyo Kato"]
     ]
